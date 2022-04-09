@@ -35,20 +35,26 @@ n<-20
 smpl<-rdist(n,t1,t2)
 }
 
-#Répétition des 1000 fois de "Gene"
+#Génération d'un échantillon unique
+
+Smpl1 <- Gene
+
+
+#Répétition des 1000 fois de "Gene" (génération des 1000 échantillons de taille 20)
   
-Smpl <- t(sapply(1:1000,Gene))
+Smpl1000 <- t(sapply(1:1000,Gene))
 
 
-h<-hist(Smpl,breaks=50,freq = FALSE)
+
+
+#Traçage du plot comparatif(à mettre en place)
+
+h<-hist(,breaks=50,freq = FALSE)
 xh<-h$mids
 yh<-c()
 for (i in 1:length(xh)){
   yh[i]<-ddist(xh[i],t1,t2)
 }
-
-
-#Traçage du plot comparatif(à mettre en place)
 
 
 lines(xh,yh)
