@@ -24,20 +24,23 @@ ddist<-function(x,theta_1,theta_2){
 
 
 
-#Répétition des 1000 fois
 
-count<--1
 
-repeat{
+#Fonction de génération d'un échantillon de taille 20 (plus simple pour définir la génération de 1000)
+
+Gene <- function(i){
 t1<-3
 t2<-1
 n<-20
 smpl<-rdist(n,t1,t2)
-count=count+1
-if(count==1000){break}
 }
 
-h<-hist(smpl,breaks=50,freq = FALSE)
+#Répétition des 1000 fois de "Gene"
+  
+Smpl <- t(sapply(1:1000,Gene))
+
+
+h<-hist(Smpl,breaks=50,freq = FALSE)
 xh<-h$mids
 yh<-c()
 for (i in 1:length(xh)){
