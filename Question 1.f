@@ -48,7 +48,7 @@ for (i in 1:length(xh)){
 }
 
 
-#Traçage du plot comparatif
+#Traçage du plot comparatif(à mettre en place)
 
 
 lines(xh,yh)
