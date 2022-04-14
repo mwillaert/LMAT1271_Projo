@@ -1,3 +1,5 @@
+#Generating the sample
+
 #Fonction calculant le quantile Q(t) pour la distribution de l'enonce
 #Input:
 #   t (float): variable de la fonction quantile Q(t)
@@ -37,10 +39,53 @@ ddist<-function(x,theta_1,theta_2){
   return(result)
 }
 
+#Estimators
+
+#Estimateurs MLE de theta_1,2
+#Input:
+#   smpl (vector of floats): echantillon genere par theta
+#Output:
+#   vector of floats: estimateurs MLE (t_1,t_2) de theta_1,theta_2
+
+theta_MLE<-function(smpl){
+  t2<-min(smpl)
+  #moyenne geometrique de l'echantillon
+  gm<-exp(mean(log(smpl)))
+  t1<- 1/log(gm/t2)
+  return(c(t1,t2))
+}
+
+#Estimateurs MME
+
+#Estimateurs MME de theta_1,2
+#Input:
+#   smpl (vector of floats): echantillon genere selon dist enonce
+#Output:
+#   vector of floats: estimateurs MLE (t_1,t_2) de theta_1,theta_2
+
+theta_MME<-function(smpl){
+  m1<-mean(smpl)
+  m2<-mean(smpl^2)
+  
+  t1<-1+sqrt(m2/(m2-m1^2))
+  t2<-(m2-sqrt(m2*(m2-m1^2)))/m1
+  return(c(t1,t2))
+}
+
+#Fonction donnant G en fonction de theta_1
+
+#Input:
+#   theta_1 (float): theta_1
+#Output:
+#   float: valeur de G
+G<-function(theta_1){
+  return(1/(2*theta_1-1))
+}
+
 #Exemples
-t1<-10
-t2<-0.3
-n<-1e5
+t1<-3
+t2<-1
+n<-20
 smpl<-rdist(n,t1,t2)
 h<-hist(smpl,breaks=50,freq = FALSE)
 xh<-h$mids
@@ -51,3 +96,16 @@ for (i in 1:length(xh)){
 
 lines(xh,yh)
 abline(v=t2)
+
+tMLE<-theta_MLE(smpl)
+tMME<-theta_MME(smpl)
+
+tMLE
+tMME
+
+G_est<-c(G(tMLE[1]),G(tMME[1]))
+G<-G(t1)
+
+G_est
+G
+
