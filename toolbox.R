@@ -97,7 +97,7 @@ repeat_estimate<-function(nsmpls,smpl_size,theta_1,theta_2){
   smpls <- matrix(rdist(smpl_size*nsmpls,theta_1,theta_2),nrow=nsmpls)
   
   #estimations de G
-  #premiere colonne: MLE, seconde colonne: MME
+  #premiere ligne: MLE, seconde ligne: MME
   G_estimates=matrix(nrow=2,ncol=nsmpls)
   for(i in 1:nsmpls){
     t1MLE<-theta_MLE(smpls[i,])[1]
@@ -107,5 +107,20 @@ repeat_estimate<-function(nsmpls,smpl_size,theta_1,theta_2){
   }
   
   return(G_estimates)
+}
 
+#Fonction estimant la qualite d'un estimateur en calculant
+#le biais, la variance et l'erreur quadratique moyenne
+
+#Input:
+#   -estimates (vector of floats): vecteur contenant estimations du parametre
+#   -exact_value (float): valeur exact du parametre
+estimate_quality<-function(estimates,exact_value){
+  mean_estimate<-mean(estimates)
+  
+  bias<-mean_estimate-exact_value
+  variance<-mean(estimates^2)-mean_estimate^2
+  mean_quadratic_error<-bias^2+variance
+  
+  return(c(bias,variance,mean_quadratic_error))
 }
