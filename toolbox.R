@@ -1,7 +1,7 @@
-#Fonction calculant le quantile Q(t) pour la distribution de l'énoncé
+#Fonction calculant le quantile Q(t) pour la distribution de l'?nonc?
 #Input:
 #   t (float): variable de la fonction quantile Q(t)
-#   theta_1,2 (float): paramètres de la distribution
+#   theta_1,2 (float): param?tres de la distribution
 #Output:
 #   float: quantile Q(t)
 
@@ -10,11 +10,11 @@ qdist<-function(t,theta_1,theta_2){
   return(result)
 }
 
-#Fonction permettant de générer un echantillon iid de taille n suivant
-#la distribution de l'énoncé
+#Fonction permettant de g?n?rer un echantillon iid de taille n suivant
+#la distribution de l'?nonc?
 #Input:
 #   smpl_size (int): taille de l'echantillon
-#   theta_1,2 (float): paramètres de la distribution
+#   theta_1,2 (float): param?tres de la distribution
 #Output:
 #   vector of floats: echantillon iid (x1,x2,...,xn)
 rdist<-function(smpl_size,theta_1,theta_2){
@@ -26,12 +26,12 @@ rdist<-function(smpl_size,theta_1,theta_2){
   return(result)
 }
 
-#Fonction donnant la densité de probabilité de l'énoncé
+#Fonction donnant la densit? de probabilit? de l'?nonc?
 #Input:
-#   x (float): variable de la densité f(x)
-#   theta_1,2 (float): paramètres de la distribution
+#   x (float): variable de la densit? f(x)
+#   theta_1,2 (float): param?tres de la distribution
 #Ouput:
-#   float: densité au point x
+#   float: densit? au point x
 ddist<-function(x,theta_1,theta_2){
   result<-theta_1 * (theta_2^theta_1)/(x^(theta_1+1))
   return(result)
@@ -41,7 +41,7 @@ ddist<-function(x,theta_1,theta_2){
 
 #Estimateurs MLE de theta_1,2
 #Input:
-#   smpl (vector of floats): echantillon généré par theta
+#   smpl (vector of floats): echantillon g?n?r? par theta
 #Output:
 #   vector of floats: estimateurs MLE (t_1,t_2) de theta_1,theta_2
 
@@ -56,7 +56,7 @@ theta_MLE<-function(smpl){
 
 #Estimateurs MME de theta_1,2
 #Input:
-#   smpl (vector of floats): echantillon généré selon la dist de l'énoncé
+#   smpl (vector of floats): echantillon g?n?r? selon la dist de l'?nonc?
 #Output:
 #   vector of floats: estimateurs MME (t_1,t_2) de theta_1,theta_2
 
@@ -85,7 +85,7 @@ G_exact<-function(theta_1){
 #Input:
 #   nsmpls (int): le nombre d'echantillons N
 #   smpl_size (int): la taille de chaque echantillon n
-#   theta_1,2 (float): les paramètres de la distribution
+#   theta_1,2 (float): les param?tres de la distribution
 #Output:
 #   matrix of floats: de dim 2 x nsmpls, la premiere 
 #   row contient les estimations MLE de G
@@ -109,7 +109,7 @@ repeat_estimate<-function(nsmpls,smpl_size,theta_1,theta_2){
   return(G_estimates)
 }
 
-#Fonction estimant la qualité d'un estimateur en calculant
+#Fonction estimant la qualit? d'un estimateur en calculant
 #le biais, la variance et l'erreur quadratique moyenne
 
 #Input:
@@ -126,3 +126,58 @@ estimate_quality<-function(estimates,exact_value){
   
   return(c(bias,variance,mean_quadratic_error))
 }
+
+
+#######################################################################
+#Linear regression Part
+
+#Fonction calculant "produit scalaire" de deux Ã©chantillons (en retirant moyenne)
+#Sum_i (xi-x)(yi-y)
+
+#Input:
+#   -x,y (vector of floats): Ã©chantillons
+#Output:
+#   -float: produit
+S<-function(x,y){
+  n<-length(x)
+  est<-0
+  mx<-mean(x)
+  my<-mean(y)
+  
+  for(i in 1:n){
+    est<-est + (x[i]-mx)*(y[i]-my)
+  }
+  return(est)
+}
+
+#Fonction donnant les estimateurs des parametres pour une regression lineaire simple
+#(methode des moindres carres) ainsi que le facteur de Correlation R2 et la p-value pour
+#l'hypothÃ¨se b1=0
+#Y=b0+b1*X
+#
+#Input:
+#   -x,y (vector of floats): Ã©chantillons
+#Output:
+#   -vector of floats:bO,b1,R2,p
+lin_reg_parameters<-function(x,y){
+  n<-length(x)
+  Sxy<-S(x,y)
+  Sxx<-S(x,x)
+  Syy<-S(y,y)
+  
+  #line parameters
+  b1<-Sxy/Sxx
+  b0<-mean(y)-b1*mean(x)
+  
+  #correlation
+  R2<-Sxy^2/(Sxx*Syy)
+  
+  #estimator of sigma
+  s<-sqrt((Syy-b1*Sxy)/(n-2))
+  
+  #p-value
+  Tobs<-(sqrt(Sxx)*b1)/s
+  p<-2*pt(-abs(Tobs),df=n-2)
+  return(c(b0,b1,R2,p))
+}
+
