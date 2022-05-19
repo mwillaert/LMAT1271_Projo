@@ -119,9 +119,10 @@ repeat_estimate<-function(nsmpls,smpl_size,theta_1,theta_2){
 #   -bias, variance, mean quadratic error (vector of floats)
 estimate_quality<-function(estimates,exact_value){
   mean_estimate<-mean(estimates)
+  n<-length(estimates)
   
   bias<-mean_estimate-exact_value
-  variance<-mean(estimates^2)-mean_estimate^2
+  variance<-(n/(n-1))*(mean(estimates^2)-mean_estimate^2)
   mean_quadratic_error<-bias^2+variance
   
   return(c(bias,variance,mean_quadratic_error))

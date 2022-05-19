@@ -4,9 +4,10 @@ source("toolbox.R")
 #Lecture du fichier
 Data<-read.delim("Data.txt",sep=";")
 x<-seq(5,47,length.out=100)
+ordered_X<-sort(Data$X)
 
 #Affichage de différents couples X*, Y*
-plot(Data$X,Data$Y)
+plot(Data$X,Data$Y,xlab="Electricity Consumption (MWh)",ylab="Productivity (1000€/day)")
 plot(Data$X^(-1),Data$Y)
 plot(Data$X^(-2),Data$Y)
 plot(Data$X^(-3),Data$Y)
@@ -23,6 +24,14 @@ lines(Data$X^(-1),Data$X^(-1)*par[2]+par[1])
 
 plot(Data$X^(-2),Data$Y)
 lines(Data$X^(-2),Data$X^(-2)*par2[2]+par2[1])
+
+plot(Data$X,Data$Y,xlab="Electricity Consumption (MWh)",ylab="Productivity (1000€/day)")
+lines(ordered_X,par2[1]+par2[2]*ordered_X^(-2),col="blue",lwd=2)
+legend(22,8,legend="tendance non-linéaire",col="blue",lty=1)
+
+plot(Data$X,Data$Y,xlab="Electricity Consumption (MWh)",ylab="Productivity (1000€/day)")
+lines(ordered_X,par[1]+par[2]*ordered_X^(-1),col="blue",lwd=2)
+legend(22,8,legend="tendance non-linéaire",col="blue",lty=1)
 
 #Affichage des résultats
 print(par)

@@ -1,7 +1,7 @@
 #Question 1.h
 source("toolbox.R")
 
-#Taille des echantillons utilisés pour estimer G
+#Taille des echantillons utilisÃ©s pour estimer G
 smpl_sizes=c(12,40,60,80,100,150,200,300,400,500)
 n_smpl_sizes=length(smpl_sizes)
 #nombre d'estimation a chaque fois

@@ -22,19 +22,21 @@ hMLE<-hist(G_estimates[1,],breaks=50,freq=FALSE)
 hMME<-hist(G_estimates[2,],breaks=50,freq=FALSE)
 
 #affichage
-plot(hMLE,col=c1,xlim=c(0,0.4),ylim=c(0,100),xlab="estimations of G")
+plot(hMLE,col=c1,xlim=c(0,0.4),ylim=c(0,100),xlab="Estimations de G", main="Estimation de G par MLE et MME (n=20, N=1000)")
 plot(hMME,col=c2,add=TRUE)
 
 #indicateurs
 abline(v=G,col="green")
 
 #legende
-legend(x="topright",legend=c("MLE","MME","Exact G"),fill=c(c1,c2,"green"))
+legend(x="topright",legend=c("MLE","MME","G Exact"),fill=c(c1,c2,"green"))
 
 dataG<-data.frame(MLE=G_estimates[1,],MME=G_estimates[2,])
 boxplot(dataG)
 abline(h=G,col="green")
-legend(x="topright",legend="Exact G",fill="green")
+legend(x="topright",legend="G Exact",fill="green")
 
+print(mean(G_estimates[1,])-G)
+print(mean(G_estimates[2,])-G)
 
 
